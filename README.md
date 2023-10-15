@@ -65,6 +65,9 @@ A ring counter is a synchronous counter which transfers the same data throughout
 
 Initially all the FFs are at RESET state. When the PRESET is applied, the input of the ring counter becomes 1. Now the output of the first FF (Q3) is 1 and other FF outputs (Q2, Q1 and Q0) will be low. Then for the next clock signal, Q2 becomes 1 and others outputs will be low. In this way, as the clock input changes, the outputs change and the data sequence rotates in the ring counter.
 
+<details>
+<summary> RTL synthesis and GLS simulation: </summary>
+
 ### Tools Used in RTL to GLS flow are:
 
 1) **iVerilog -** IVERILOG is a free and open-source Verilog simulation and synthesis tool. It's part of the Icarus Verilog project, which aims to provide a full-featured and high-performance Verilog simulation and synthesis environment.Icarus Verilog is a simulator tool to check the design with the help of test bench. The design is nothing but the Verilog hardware description language code which specifies the functionality. The testbench is the setup to apply stimulus to test the functionality of the design. This simulator looks for the changes to the input. Upon changes to the input, the output is evaluated.
@@ -73,12 +76,143 @@ Initially all the FFs are at RESET state. When the PRESET is applied, the input 
 
 3) **Yosys -** Yosys is an open-source framework for Verilog RTL synthesis. It's widely used in digital design for converting high-level descriptions of a digital circuit into a gate-level representation. In other words, it helps in transforming a behavioral description (written in a language like Verilog) into a netlist, which is a detailed representation of the digital logic in terms of gates and their interconnections.
 
+## STEP-1:
+
 To start with the Flow we first need to write the verilog code for the idea to create a ".v" file and we even write the testbench for the file which we will be implement together in the iVerilog tool in order for it to generate a dump file to view the waveform.
 
+`vim ring_counter.v`
+```v
+//declare the Verilog module - The inputs and output port names.
+module ring_counter(
+    Clock,
+    Reset,
+    Count_out
+    );
+
+    //what are the input ports and their sizes.
+    input Clock;
+    input Reset;
+    //what are the output ports and their sizes.
+    output [3:0] Count_out;
+    //Internal variables
+    reg [3:0] Count_temp;
+
+    //Whenever the Clock changes from 0 to 1(positive edge) or 
+    //a change in Reset, execute the always block.
+    always @(posedge Clock or posedge Reset)
+    begin
+        if(Reset == 1'b1)   begin  //when Reset is high 
+            Count_temp = 4'b0001;   end  //The Count value is reset to "0001".
+        else if(Clock == 1'b1)  begin  //When the Clock is high
+            //Left shift the Count value.
+            Count_temp = {Count_temp[2:0],Count_temp[3]};   end 
+    end
+    
+    //The Count value is assigned to final output port.
+    assign Count_out = Count_temp;
+    
+endmodule
+```
+After writing the code for the `ring_counter.v` your ".v" file should looks similar to as shown below:
+
+![Screenshot from 2023-10-14 16-26-06](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/eaa4f5aa-9a2a-4f53-9a17-b1b6d9d62870)
+
+For this `ring_counter.v` file we now write the testbench for this 4-bit ring counter and then we implement this in the simulation tool iVerilog:
+
+`vim tb_ring_counter.v`
+```v
+module tb_ring;
+
+    // Inputs
+    reg Clock;
+    reg Reset;
+
+    // Outputs
+    wire [3:0] Count_out;
+
+    // Instantiate the Unit Under Test (UUT)
+    ring_counter uut (
+        .Clock(Clock), 
+        .Reset(Reset), 
+        .Count_out(Count_out)
+    );
+
+    ///////////////////Clock generation ///////////////////////////
+    initial Clock = 0; 
+    always #10 Clock = ~Clock; 
+    ////////// #10 means wait for 10 ns before executing the next statement. ///////////
+    
+    //Simulation inputs.
+    initial begin
+    //Apply Reset for 50 ns.
+        Reset = 1; //Reset is high
+        #50;       //Wait for 50 ns
+        Reset = 0; //Reset is low.
+    end
+    initial begin
+    $dumpfile("dump.vcd");
+    $dumpvars;
+    end
+      
+endmodule
+```
+After writing the code for the `tb_ring_counter.v` your ".v" file should looks similar to as shown below:
+
+![Screenshot from 2023-10-14 16-26-28](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/ed7984cf-a16a-4094-b41a-e42eeb621d83)
+
+## STEP-2:
+
+Once we have created our testbench file and the main file for the 4-bit ring counter now we implment this in our simulation tool iVerilog,What iVerilog does is it takes in the testbench and the main file to produce a **a.out** file which can be used to create a **dump file** ".vcd" this later can be used to view the waveform.
+
+To start with the simulation tool we write the following code:
+
+```c
+iverilog ring_counter.v tb_ring_counter.v  // writing the main file and testbench file to be implemented using iverilog
+ls      // ls command is used to list the files and directories in a directory,in this way we see the output file a.out
+```
+
+as shown below we see that the above code gives a a.out file:
+
+![Screenshot from 2023-10-14 16-26-45](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/90943fbb-2479-4d0c-97e8-25ba43c8ab63)
+
+a.out files are the default executable files generated by older C compilers on Unix and Unix-like systems. 
+
+Now we execute the generated file file a.out by using the command-
+```
+./a.out   // ./a.out is a command used in Unix-like operating systems to execute a program. 
+```
+as we see from the above picture itself ./a.out executes and gives us a `dump.vcd` this is a dumpfile that can be used to view using GTKwave wave viewer
+tool.
+
+To view the waveform using GTKwave tool we use the Dumpfile `dump.vcd`,to run this type the command-
+```
+gtkwave dump.vcd
+```
+The output of this command is as shown below:
+
+![Screenshot from 2023-10-14 16-26-54](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4542ab5d-ada9-4bfd-92d0-868897a52f46)
+
+### Pre-Synthesis Simulation result:
+
+Once we write this command the gtkwave tool shows us the waveform for pre-synthesis simulation results as shown below:
+
+![Screenshot from 2023-10-14 16-32-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/118b0f26-0d7c-4535-b3cb-3858f3990024)
+
+![Screenshot from 2023-10-14 16-33-01](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/46fff0db-8f82-48bf-b454-821f3bee5dec)
+
+## STEP-3
+
+Now we move on to the main step that is the RTL synthesis in this step
 
 
 
 
+
+
+
+
+
+</details>
 
 
 
