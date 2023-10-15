@@ -233,9 +233,7 @@ After the synth command the synthesis is done giving us the Statistics after the
 
 ![Screenshot from 2023-10-14 16-45-08](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/fd6a205f-2db7-4f8d-9a56-74f563758047)
 
-Here we see that the number of components used in making our ring counter and the statistics of the number of flip flops used as shown below:
-
-![Screenshot from 2023-10-14 16-45-08](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4e0ffac3-2f98-4675-8234-ab90087d9fd5)
+Here we see that the number of components used in making our ring counter and the statistics of the number of flip flops used as shown above
 
 To view the netlist type the following commands-
 ```c
