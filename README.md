@@ -198,23 +198,101 @@ Once we write this command the gtkwave tool shows us the waveform for pre-synthe
 
 ![Screenshot from 2023-10-14 16-32-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/118b0f26-0d7c-4535-b3cb-3858f3990024)
 
+Initially, it's in the high state, which means the clock signal is active and transitioning.The waveform indicates that reset=1, meaning the reset signal is active at the start.Since the clock is 1, the counter is being clocked. This suggests that the counter is advancing in states.With reset=0, the counter is not being reset at this moment.Our output keeps transitioning at every posedge clock.
+
 ![Screenshot from 2023-10-14 16-33-01](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/46fff0db-8f82-48bf-b454-821f3bee5dec)
 
-## STEP-3
+## STEP-3: RTL synthesis
 
-Now we move on to the main step that is the RTL synthesis in this step
+**what do we do in RTL synthesis?**
+
+Synthesis transforms the simple RTL design into a gate-level netlist with all the constraints as specified by the designer. In simple language, Synthesis is a process that converts the abstract form of design to a properly implemented chip in terms of logic gates.
+
+Synthesis takes place in multiple steps:
+-   Converting RTL into simple logic gates.
+-   Mapping those gates to actual technology-dependent logic gates available in the technology libraries.
+-   Optimizing the mapped netlist keeping the constraints set by the designer intact.
 
 
+In this step we Make use of the **Yosys** tool to generate a Netlist, this Netlist is later run using the iverilog where the ".net" and the testbench file which gives us again a executable file **a.out.**
 
+if yosys already installed Open yosys and start with the process to create the Netlist and ".net" file for our RTL synthesis which later can be used for GLS(Gate level simulation).
 
+After running Yosys type the following commands in Yosys to start with the process:
 
+![Screenshot from 2023-10-14 16-44-50](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/9ad499f8-9042-4f50-bab4-994c1c7c9da3)
 
+as shown from above image write the code:
 
+```c
+ read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+ read_verilog ring_counter.v
+ synth -top ring_counter
+```
+After the synth command the synthesis is done giving us the Statistics after the synthesis as shown below:
 
+![Screenshot from 2023-10-14 16-45-08](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/fd6a205f-2db7-4f8d-9a56-74f563758047)
+
+Here we see that the number of components used in making our ring counter and the statistics of the number of flip flops used as shown below:
+
+![Screenshot from 2023-10-14 16-45-08](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4e0ffac3-2f98-4675-8234-ab90087d9fd5)
+
+To view the netlist type the following commands-
+```c
+ abc -liberty -lib ./lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+ show
+```
+
+![Screenshot from 2023-10-14 16-45-36](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/a6419ec3-6463-4230-b58e-455857e55dfd)
+
+![Screenshot from 2023-10-14 16-45-59](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/26a1d52f-1017-432c-8299-08614da3aa5d)
+
+Now to get the ".net" file for this we need to write the following commands-
+
+![Screenshot from 2023-10-14 16-49-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/39718651-66d9-4659-9135-b31d878a4ca7)
+
+```c
+write_verilog ring_counter_net.v
+!vim ring_counter_net.v
+```
+![Screenshot from 2023-10-14 16-46-52](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/cb4457eb-eeb3-4a14-b045-ddac8781c334)
+
+to make the given netlist code even more simpler and small write the following commands:
+```c
+write_verilog -noattr ring_counter_net.v
+!vim ring_counter_net.v
+```
+![Screenshot from 2023-10-14 16-48-36](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/6de29c32-271d-4025-9269-9980bb738170)
+
+## STEP-4:GLS(gate level simulation)
+
+In this step we do the GLS(gate level simulation) we take the netlist file generated ".net" and the testbench file that we had written for our ring counter at the starting and again use the iVerilog tool to generate the waveform for GLS.
+
+To use the iVerilog command we write the code as shown below:
+```c
+iverilog ../my_lib/verilog_model/primitives.v ../my_lib/verilog_model/sky130_fd_sc_hd.v ring_counter_net.v tb_ring_counter.v
+ls
+```
+
+![Screenshot from 2023-10-14 16-52-20](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3b1a79b8-77a4-4e03-a2e1-2f1abb1829de)
+
+as we see again we have generated an executable file a.out to generate the waveform in gtkwave we execute the a.out file.
+
+![Screenshot from 2023-10-14 16-52-28](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/df4e6690-01b7-46ba-b7e5-85ea8749add6)
+
+to view in gtkwave-
+```c
+gtkwave dump.vcd
+```
+![Screenshot from 2023-10-14 16-55-15](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/42490ac8-4663-43d6-a3fe-37fd513c989a)
+
+![Screenshot from 2023-10-14 16-55-30](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/42aa454d-809a-4227-989d-84028695dfbd)
 
 </details>
 
-
+<details>
+<summary> Physical design </summary>
+</details>
 
 
 
