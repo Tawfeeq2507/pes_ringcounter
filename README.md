@@ -434,7 +434,27 @@ To make the ```config.tcl``` file we type the following:
 
 - in this vim text editor we type our design file.
 
-``` v
+``` sh
+# Design
+set ::env(DESIGN_NAME) "ring_counter"
+
+set ::env(VERILOG_FILES) "./designs/ring_counter/src/ring_counter.v"
+
+set ::env(CLOCK_PERIOD) "5.000"
+set ::env(CLOCK_PORT) "clk"
+
+
+set ::env(CLOCK_NET) $::env(CLOCK_PORT)
+
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__typical.lib"
+
+set filename $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/$::env(PDK)_$::env(STD_CELL_LIBRARY)_config.tcl
+if { [file exists $filename] == 1} {
+        source $filename
+}
 ```
 
 after this we go to the src file and add the ```ring_counter.v``` file that we generated from Yosys in RTL synthesis and the required PDK's for our design.
@@ -445,6 +465,42 @@ Once we have created our design file we invoke the openlane.
 
 to invoke openlane we type the following commands:
 
+```sh
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+./flow.tcl -interactive
+package require openlane
+```
+
+Once we invoke OpenLane it should look same as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b08f114c-ea58-4050-a8f7-57b7ff7b58e9)
+
+after invoking OpenLane we now prepare the deisgn we want to work on in OpenLane since we are working with our 4 bit ring counter we will type the following command:
+
+```prep -design ring_counter```
+
+it should look somewhat as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/7ccb5c2f-4a91-484e-aea0-315ef1ebffbb)
+
+after preparing the design we now do the first process of physical design that is ```run_synthesis```
+
+# STEP-3 : SYNTHESIS
+
+we type ```run_synthesis``` in openlane and this gives the statistics of the ring_counter and gives a succesfull synthesis during this process it creates a runs folder that holds the ```logs,results,reports,etc``` of the design file that we did synthesis for which can be seen in the ```runs``` directory.
+
+- run_synthesis statistics as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3e82ae77-ad91-4882-a4f2-917ac074efe6)
+
+- The runs keeps the track of the process we do in openlane as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/19e0c7e7-79c5-4e91-a32f-db9704edf926)
+
+# STEP-4 : FLOORPLAN
+
+After synthesis now we do floorplan of the ring counter to do this we type ```run_floorplan``` what this does is that it creates a floorplan.def file that can be used to see the design in magic tool.
 
 
 
