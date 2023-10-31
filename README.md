@@ -510,6 +510,8 @@ this tells us that the run_floorplan was succesfull and now we use this to view 
 
 To view the layout of the floorplan, use the command ``` magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def ring_counter.floorplan.def &```
 
+where ``` -T indicates the tech file``` and ``` &  is used to avoid the prompt that magic shows```
+
 the command is as shown below:
 
 ![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/2bd9cf76-239e-439b-a4a4-6f67f9236aff)
