@@ -474,7 +474,7 @@ package require openlane
 
 Once we invoke OpenLane it should look same as shown below:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b08f114c-ea58-4050-a8f7-57b7ff7b58e9)
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/787885e7-545d-4985-8631-5712403a1167)
 
 after invoking OpenLane we now prepare the deisgn we want to work on in OpenLane since we are working with our 4 bit ring counter we will type the following command:
 
@@ -482,7 +482,7 @@ after invoking OpenLane we now prepare the deisgn we want to work on in OpenLane
 
 it should look somewhat as shown below:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/7ccb5c2f-4a91-484e-aea0-315ef1ebffbb)
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3863f4b2-97f2-463c-8d66-37d604bbb225)
 
 after preparing the design we now do the first process of physical design that is ```run_synthesis```
 
@@ -492,16 +492,43 @@ we type ```run_synthesis``` in openlane and this gives the statistics of the rin
 
 - run_synthesis statistics as shown below:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3e82ae77-ad91-4882-a4f2-917ac074efe6)
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3ae20737-9014-4075-8138-e51df2782aa8)
 
 - The runs keeps the track of the process we do in openlane as shown below:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/19e0c7e7-79c5-4e91-a32f-db9704edf926)
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/e77dcc08-297b-42d2-ac11-d2e01d602ae1)
 
 # STEP-4 : FLOORPLAN
 
 After synthesis now we do floorplan of the ring counter to do this we type ```run_floorplan``` what this does is that it creates a floorplan.def file that can be used to see the design in magic tool.
 
+when the floorplan is succesful in the results floorpan we see that we have a file created by the name ``` ring_counter.floorplan.def```as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/02a66f05-c2f9-4db3-b081-819c46dcb871)
+
+this tells us that the run_floorplan was succesfull and now we use this to view the layout using Magic tool.
+
+To view the layout of the floorplan, use the command ``` magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def ring_counter.floorplan.def &```
+
+the command is as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/2bd9cf76-239e-439b-a4a4-6f67f9236aff)
+
+The layout of ring_counter is as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/775d40ba-9e5d-4630-b064-e1cde21057fa)
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/508658b6-50d0-4dd4-9b46-299789ae803e)
+
+To view the contents of the following produced floorplan ```ring_counter.floorplan.def``` we can  then review the contents to see if there are any issues with the floorplan definition, particularly related to the utilization parameter. to this we type the following command:
+
+``` cat ring_counter.floorplan.def```
+
+the output of this command is as shown below:
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4a1fbe00-4bc2-4163-a281-b3f490e62315)
+
+![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4029b10f-34e4-4f03-b2b8-01cb2ff1cd55)
 
 
 
