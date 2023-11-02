@@ -320,7 +320,7 @@ gtkwave dump.vcd
 <details>
 <summary> Physical design </summary>
 
-- Hello and welcome to the Physical design of the 4 bit ring counter that is being implemented after the synthesis part we move to the physical design also known as RTL2GDSII flow.
+**Hello and welcome to the Physical design of the 4 bit ring counter that is being implemented after the synthesis part we move to the physical design also known as RTL2GDSII flow.**
 
 # RTL2GDSII FLow (simplified)
 
@@ -351,111 +351,272 @@ Key aspects of physical design include:
 
 In physical design in simple terms when you have a design in Verilog, the next step is to take that logical description and go through the physical design process to create a layout that can be manufactured into an actual chip. This requires using Electronic Design Automation (EDA) tools.
 
-### Tools used in Physical design:
+# Tools used in Physical design:
 
-# 1) Openlane
+## 1) Openlane
 
 OpenLane is an open-source, automated RTL-to-GDSII (Register-Transfer Level to Graphic Design System II) flow for digital integrated circuit design. It's essentially a complete toolchain that assists in the creation of Application-Specific Integrated Circuits (ASICs). The OpenLANE flow comprises a variety of tools such as Yosys, ABC, OpenSTA, Fault, OpenROAD app, Netgen and Magic which are used to harden chips and macros, i.e. generate final GDSII from the design RTL. The primary goal of OpenLANE is to produce clean GDSII with no human intervention. 
 
 ![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/8ff88f4d-b970-4bd8-abff-24ad1658b71d)
 
-## TOOL INSTALLATION :
+## TOOL INSTALLATION OF OPENLANE:
+
+To Download OpenLane follow the require steps:
+
+- For ease of installation, OpenLane uses Docker images.
+
+- These images include OpenLane’s applications, binaries as well as all the required dependencies.
+
+### Installation of required packages
+
+Update packages database and upgrade the packages to avoid version mismatches then install required packages.
 
 ```sh
 sudo apt-get update
 sudo apt-get upgrade
 sudo apt install -y build-essential python3 python3-venv python3-pip make git
+```
+### Docker Installation
 
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+To Install Docker follow the steps as shown below :
 
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```sh
+# Remove old installations
+sudo apt-get remove docker docker-engine docker.io containerd runc
+# Installation of requirements
+sudo apt-get update
+sudo apt-get install \
+   ca-certificates \
+   curl \
+   gnupg \
+   lsb-release
+# Add the keyrings of docker
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# Add the package repository
+echo \
+   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# Update the package repository
+sudo apt-get update
 
-sudo apt update
+# Install Docker
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-sudo apt install docker-ce docker-ce-cli containerd.io
-
+# Check for installation
 sudo docker run hello-world
+```
 
+A successful installation of Docker would have this output:
+
+```sh
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the "hello-world" image from the Docker Hub. (amd64)
+3. The Docker daemon created a new container from that image which runs the executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+https://hub.docker.com/
+
+For more examples and ideas, visit:
+https://docs.docker.com/get-started/
+```
+
+### Making Docker available without root (Linux)
+
+```sh
 sudo groupadd docker
 sudo usermod -aG docker $USER
-sudo reboot 
+sudo reboot # REBOOT!
+```
+- You must **restart** your **operating system** for the group permissions to apply.
 
+### Checking the Docker Installation
+
+- After that, you can run Docker Hello World without root. To test it use the following command:
+
+```sh
 # After reboot
 docker run hello-world
 ```
-
-- After downloading to enter the interactive mode with openlane type the following:
+- we get the message of Hello world, once again, but this time without root, as shown below:
 
 ```sh
-cd OpenLane
-make mount
-./flow.tcl -interactive 
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+1. The Docker client contacted the Docker daemon.
+2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+   (amd64)
+3. The Docker daemon created a new container from that image which runs the
+   executable that produces the output you are currently reading.
+4. The Docker daemon streamed that output to the Docker client, which sent it
+   to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+$ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+https://hub.docker.com/
+
+For more examples and ideas, visit:
+https://docs.docker.com/get-started/
 ```
 
-- To instll the PDK's and Tools:
+### Checking Installation Requirements
 
 ```sh
-git clone https://github.com/The-OpenROAD-Project/OpenLane
-cd OpenLane
+git --version
+docker --version
+python3 --version
+python3 -m pip --version
+make --version
+python3 -m venv -h
+```
+
+### Download and Install OpenLane
+
+- Download OpenLane from GitHub:
+
+```sh
+git clone --depth 1 https://github.com/The-OpenROAD-Project/OpenLane.git
+cd OpenLane/
 make
 make test
 ```
 
-# 2) Magic
+Successful test will output the following line:
+
+```sh
+Basic test passed
+```
+
+## 2) Magic
 
 Magic is an open-source, user-friendly VLSI (Very Large Scale Integration) layout tool. It is widely used in the semiconductor industry and academia for designing integrated circuits at the physical level. Magic provides a range of features that facilitate the creation, editing, and visualization of IC layouts.Magic is a versatile and widely-used tool in the field of integrated circuit design. It's known for its flexibility, ease of use, and robust feature set, making it a valuable asset in the development of electronic systems.
 
-## TOOL INSTALLATION :
+## TOOL INSTALLATION FOR MAGIC:
 
 ```sh
-sudo apt-get install m4
-sudo apt-get install tcsh
-sudo apt-get install csh
-sudo apt-get install libx11-dev
-sudo apt-get install tcl-dev tk-dev
-sudo apt-get install libcairo2-dev
-sudo apt-get install mesa-common-dev libglu1-mesa-dev
-sudo apt-get install libncurses-dev
-git clone https://github.com/RTimothyEdwards/magic
-cd magic
-./configure
-make
-make install
+git clone https://github.com/RTimothyEdwards/magic  
+$ sudo apt-get install m4  
+$ sudo apt-get install tcl-dev  
+$ sudo apt-get install tk-dev  
+$ sudo apt-get install blt  
+$ sudo apt-get install freeglut3  
+$ sudo apt-get install libglut3  
+$ sudo apt-get install libglu1-mesa-dev  
+$ sudo apt-get install libgl1-mesa-dev  
+$ sudo apt-get install csh  
+$ ./configure  
+$ make  
+$ make install
 ```
-   
+
+## 3) Docker
+
+Docker is a platform that enables developers to create, deploy, and run applications in containers. Containers are lightweight, portable, and consistent environments that encapsulate an application and its dependencies. They allow developers to package an application and its runtime, libraries, and other required components into a single unit.
+
+### Install Docker Engine on Ubuntu:
+
+#### OS Requirements
+
+To install Docker Engine, you need the 64-bit version of one of these Ubuntu versions:
+
+```
+    Ubuntu Lunar 23.04
+    Ubuntu Kinetic 22.10
+    Ubuntu Jammy 22.04 (LTS)
+    Ubuntu Focal 20.04 (LTS)
+```
+
+#### Uninstall old versions
+
+Before you can install Docker Engine, you need to uninstall any conflicting packages.
+
+- Run the following command to uninstall all conflicting packages:
+
+```sh
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+
+#### Now install docker using the apt repository:
+
+- Before you install Docker Engine for the first time on a new host machine, you need to set up the Docker repository. Afterward, you can install and update Docker from the repository.
+
+**1. Set up Docker's apt repository.**
+
+```sh
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+**2. Install the Docker packages.**
+
+- To install the latest version, run:
+
+```sh
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+**3.  Verify that the Docker Engine installation is successful by running the ```hello-world``` image.**
+
+```sh
+sudo docker run hello-world
+```
+This command downloads a test image and runs it in a container. When the container runs, it prints a confirmation message and exits.
+
+You have now successfully installed and started Docker Engine.
+
+
 # STEP-1
 
-To make the physical design we first need to make our design file of the ring Counter that we made to make this we need the ```ring_counter.v``` file and the Skywater PDK's that Contains all the foundry provided PDK related files. To make this we first Make our ```ring counter``` folder within the design directory in Openlane and then we make another folder named as ```src``` and ```config.tcl``` this makes the design file.
+To make the physical design we first need to make our design file of the ring Counter that we made to make this we need the ```ring_counter.v``` file and the Skywater PDK's that Contains all the foundry provided PDK related files. To make this we first Make our ```ring counter``` folder within the design directory in Openlane and then we make another folder named as ```src``` and ```config.json``` this makes the design file.
 
-To make the ```config.tcl``` file we type the following:
+To make the ```config.json``` file we type the following:
 
-```vim config.tcl```
+```vim config.json```
 
 - in this vim text editor we type our design file.
 
 ``` sh
-# Design
-set ::env(DESIGN_NAME) "ring_counter"
-
-set ::env(VERILOG_FILES) "./designs/ring_counter/src/ring_counter.v"
-
-set ::env(CLOCK_PERIOD) "5.000"
-set ::env(CLOCK_PORT) "clk"
-
-
-set ::env(CLOCK_NET) $::env(CLOCK_PORT)
-
-set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__typical.lib"
-set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__fast.lib"
-set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__slow.lib"
-set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/ring_counter/src/sky130_fd_sc_hd__typical.lib"
-
-set filename $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/$::env(PDK)_$::env(STD_CELL_LIBRARY)_config.tcl
-if { [file exists $filename] == 1} {
-        source $filename
+{
+    "DESIGN_NAME": "ring_counter",
+    "VERILOG_FILES": "dir::src/ring_counter.v",
+    "CLOCK_PORT": "clk",
+    "CLOCK_PERIOD": 10.0,
+    "DIE_AREA": "0 0 500 500",
+    "FP_SIZING": "absolute",
+    "FP_PDN_VPITCH": 25,
+    "FP_PDN_HPITCH": 25,
+    "FP_PDN_VOFFSET": 5,
+    "FP_PDN_HOFFSET": 5,
+    "DESIGN_IS_CORE": true
 }
 ```
+
+after making the ```config.json``` it should something as shown below:
+
+![Screenshot from 2023-11-02 20-51-53](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/eb4e0023-fca4-4a8c-8c59-6259d7caec2a)
 
 after this we go to the src file and add the ```ring_counter.v``` file that we generated from Yosys in RTL synthesis and the required PDK's for our design.
 
@@ -463,121 +624,144 @@ after this we go to the src file and add the ```ring_counter.v``` file that we g
 
 Once we have created our design file we invoke the openlane.
 
-to invoke openlane we type the following commands:
+to invoke openlane and run the ASIC flow that completes all the key aspects of RTL2GDSII FLow physical design we type the following commands:
 
 ```sh
-cd Desktop/work/tools/openlane_working_dir/openlane
-docker
-./flow.tcl -interactive
-package require openlane
+cd OpenLane
+make mount
+./flow.tcl -design <DESIGN NAME>  ## DESIGN NAME - here we are working with 4 bit ring_counter therefore our design name is gonna be ring_counter
 ```
 
 Once we invoke OpenLane it should look same as shown below:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/787885e7-545d-4985-8631-5712403a1167)
+![Screenshot from 2023-11-02 20-52-30](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/768a7354-a034-4128-9ee8-69ed30189be8)
 
-after invoking OpenLane we now prepare the deisgn we want to work on in OpenLane since we are working with our 4 bit ring counter we will type the following command:
 
-```prep -design ring_counter```
+## FLOORPLAN:
 
-it should look somewhat as shown below:
+before viewing the floorplan we first need to go to the directory where the ring_counter.def file for floorplan is created, we type the following command to locate the file:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3863f4b2-97f2-463c-8d66-37d604bbb225)
+```sh
+OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/floorplan
+```
 
-after preparing the design we now do the first process of physical design that is ```run_synthesis```
+this will give us 2 files present in the floorplan after the **Successfull flow** as shown below:
 
-# STEP-3 : SYNTHESIS
+![Screenshot from 2023-11-02 21-55-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/f89e6238-4c20-4e4b-a210-f6ad80d6dbb0)
 
-we type ```run_synthesis``` in openlane and this gives the statistics of the ring_counter and gives a succesfull synthesis during this process it creates a runs folder that holds the ```logs,results,reports,etc``` of the design file that we did synthesis for which can be seen in the ```runs``` directory.
+Now to open the ring_counter.def file for floorplan we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
-- run_synthesis statistics as shown below:
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+```
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3ae20737-9014-4075-8138-e51df2782aa8)
+- the command should look similar to something shown below:
 
-- The runs keeps the track of the process we do in openlane as shown below:
+![Screenshot from 2023-11-02 21-55-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/39b057b7-29d4-464f-be80-aac172aeb278)
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/e77dcc08-297b-42d2-ac11-d2e01d602ae1)
+now to view the floorplan we type the following command:
 
-# STEP-4 : FLOORPLAN
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+```
 
-After synthesis now we do floorplan of the ring counter to do this we type ```run_floorplan``` what this does is that it creates a floorplan.def file that can be used to see the design in magic tool.
+- The floorplan is viewed in MAGIC as shown below:
 
-when the floorplan is succesful in the results floorpan we see that we have a file created by the name ``` ring_counter.floorplan.def```as shown below:
+![Screenshot from 2023-11-02 22-00-05](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/96baf918-1c36-4d74-ae19-ed4a466496dd)
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/02a66f05-c2f9-4db3-b081-819c46dcb871)
+![Screenshot from 2023-11-02 22-01-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/946cb65b-12b3-48e9-9166-4b8f4ec43fda)
 
-this tells us that the run_floorplan was succesfull and now we use this to view the layout using Magic tool.
+![Screenshot from 2023-11-02 22-01-43](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3ff4b8cc-ae69-4237-bfc7-de7a9d040849)
 
-To view the layout of the floorplan, use the command ``` magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def ring_counter.floorplan.def &```
+## PLACEMENT:
 
-where ``` -T indicates the tech file``` and ``` &  is used to avoid the prompt that magic shows```
+similar to floorplan before viewing the placement we first need to go to the directory where the ring_counter.def file  for placement is created, we type the following command to locate the file:
 
-the command is as shown below:
+```sh
+OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/placement
+```
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/2bd9cf76-239e-439b-a4a4-6f67f9236aff)
+this will give us 4 files present in the placement after the **Successfull flow** as shown below:
 
-The layout of ring_counter is as shown below:
+![Screenshot from 2023-11-02 22-06-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/f0f934db-ad7b-4ac8-8f5f-d51b95967fb5)
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/775d40ba-9e5d-4630-b064-e1cde21057fa)
+Now to open the ring_counter.def file for placement we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/508658b6-50d0-4dd4-9b46-299789ae803e)
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+```
 
-To view the contents of the following produced floorplan ```ring_counter.floorplan.def``` we can  then review the contents to see if there are any issues with the floorplan definition, particularly related to the utilization parameter. to this we type the following command:
+- the command should look similar to something shown below:
 
-``` cat ring_counter.floorplan.def```
+![Screenshot from 2023-11-02 22-09-51](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3b9513ba-5327-497c-b0b7-75ee172441b3)
 
-the output of this command is as shown below:
+now to view the placement we type the following command:
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4a1fbe00-4bc2-4163-a281-b3f490e62315)
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+```
 
-![image](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4029b10f-34e4-4f03-b2b8-01cb2ff1cd55)
+- The Placement is viewed in MAGIC as shown below:
 
+![Screenshot from 2023-11-02 22-13-29](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/ff083347-cb2f-43e1-85c0-9af5028fc07a)
 
+![Screenshot from 2023-11-02 22-13-46](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b69bf329-53ca-4de4-8d0e-af0916581fde)
 
+![Screenshot from 2023-11-02 22-13-50](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/bbbc90df-ee96-4e68-b239-dbf9d6bc5b26)
 
+![Screenshot from 2023-11-02 22-14-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b7fed75f-c1a3-4e7e-8a20-94253ffd8567)
 
+## CTS (CLOCK TREE SYNTHESIS):
 
+similar to placement before viewing the CTS we first need to go to the directory where the ring_counter.def file  for CTS is created, we type the following command to locate the file:
 
+```sh
+OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/cts
+```
 
+this will give us 3 files present in the CTS after the **Successfull flow** as shown below:
 
+![Screenshot from 2023-11-02 22-22-09](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/6f975ac8-cd2e-4b34-b46c-301622232b74)
 
 
 
+![Screenshot from 2023-11-02 22-24-54](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/12976067-eca2-4ccd-973d-00a43b03e274)
 
+![Screenshot from 2023-11-02 22-25-04](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/206cc426-2a4d-4d43-a487-0ff36f87cdb8)
 
+## ROUTING:
 
+similar to CTS before viewing the Routing we first need to go to the directory where the ring_counter.def file  for Routing is created, we type the following command to locate the file:
 
+```sh
+OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/routing
+```
 
+this will give us 4 files present in the Routing after the **Successfull flow** as shown below:
 
+![Screenshot from 2023-11-02 22-27-00](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/627ab8d6-c349-4e23-a541-0eb682ca2845)
 
+Now to open the ring_counter.def file for Routing we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+```
 
+now to view the CTS we type the following command:
 
+```sh
+magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+```
 
+- The Routing is viewed in MAGIC as shown below:
 
+![Screenshot from 2023-11-02 22-31-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b4024d8a-b406-4dee-a78c-289831c662cc)
 
+![Screenshot from 2023-11-02 22-31-55](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5938fb40-a0bb-46c3-a000-7f95ca5b1965)
 
+![Screenshot from 2023-11-02 22-32-11](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/9aa814b8-85f1-4db2-aae9-701cccb1b071)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![Screenshot from 2023-11-02 22-32-19](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/03d00eb5-c49e-436d-b0e1-d11861b99448)
 
 </details>
 
