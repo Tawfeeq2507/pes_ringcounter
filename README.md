@@ -777,6 +777,16 @@ magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef de
 
 ![Screenshot from 2023-11-04 16-29-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/63bf16fa-8833-4f7a-860e-4733c716ebe5)
 
+
+## STATISTICS:
+
+```
+    Area = 171 um2 12% Utilization 
+    Internal Power = 1.96e-0 W   62.5% 
+    Switching Power =  1.18e-06  37.5%
+    Leakage Power = 1.61e-10 
+    Total Power = 3.14e-06
+```
 </details>
 
 
