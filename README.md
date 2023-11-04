@@ -777,16 +777,14 @@ magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef de
 
 ![Screenshot from 2023-11-04 16-29-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/63bf16fa-8833-4f7a-860e-4733c716ebe5)
 
+To view the final design type the following code: ```magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.gds &```
+
+![Screenshot from 2023-11-04 19-16-10](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/6c9155e1-d69b-478d-bde8-bc833ba71746)
+
+![Screenshot from 2023-11-04 19-16-19](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/94742a73-e92a-4513-84d7-98418d0c0354)
 
 ## STATISTICS:
 
-```
-    Area = 171 um2 12% Utilization 
-    Internal Power = 1.96e-0 W   62.5% 
-    Switching Power =  1.18e-06  37.5%
-    Leakage Power = 1.61e-10 
-    Total Power = 3.14e-06
-```
 </details>
 
 
