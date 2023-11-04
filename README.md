@@ -604,7 +604,7 @@ To make the ```config.json``` file we type the following:
     "VERILOG_FILES": "dir::src/ring_counter.v",
     "CLOCK_PORT": "clk",
     "CLOCK_PERIOD": 10.0,
-    "DIE_AREA": "0 0 500 500",
+    "DIE_AREA": "0 0 55 55",
     "FP_SIZING": "absolute",
     "FP_PDN_VPITCH": 25,
     "FP_PDN_HPITCH": 25,
@@ -616,7 +616,7 @@ To make the ```config.json``` file we type the following:
 
 after making the ```config.json``` it should something as shown below:
 
-![Screenshot from 2023-11-02 20-51-53](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/eb4e0023-fca4-4a8c-8c59-6259d7caec2a)
+![Screenshot from 2023-11-04 15-47-17](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/2834ea7f-2d9a-4c93-9f28-c97da19949dc)
 
 after this we go to the src file and add the ```ring_counter.v``` file that we generated from Yosys in RTL synthesis and the required PDK's for our design.
 
@@ -629,139 +629,141 @@ to invoke openlane and run the ASIC flow that completes all the key aspects of R
 ```sh
 cd OpenLane
 make mount
-./flow.tcl -design <DESIGN NAME>  ## DESIGN NAME - here we are working with 4 bit ring_counter therefore our design name is gonna be ring_counter
+./flow.tcl -interactive  
 ```
 
 Once we invoke OpenLane it should look same as shown below:
 
-![Screenshot from 2023-11-02 20-52-30](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/768a7354-a034-4128-9ee8-69ed30189be8)
+![Screenshot from 2023-11-04 15-48-53](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4e8bc550-e91a-49e4-a886-64aca9196e8e)
 
+now after going into the interactive mode we now prepare our design, to prepare design type- ```prep -design <DESIGN NAME>``` over here we m
+
+![Screenshot from 2023-11-04 15-49-13](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/4820d235-68d2-43c2-a8d0-d03638534a77)
+
+## SYNTHESIS:
+
+To start with the flow we first need to synthesize our design file to do this we type the following command: ```run_synthesis```
+
+after running synthesis it look smtg like this:
+
+![Screenshot from 2023-11-04 15-51-38](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/674c48e4-d253-480c-ae0c-977b06691924)
 
 ## FLOORPLAN:
 
 before viewing the floorplan we first need to go to the directory where the ring_counter.def file for floorplan is created, we type the following command to locate the file:
 
 ```sh
-OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/floorplan
+OpenLane/designs/ring_counter/runs/RUN_2023.11.04_10.09.02/results/floorplan
 ```
 
 this will give us 2 files present in the floorplan after the **Successfull flow** as shown below:
 
-![Screenshot from 2023-11-02 21-55-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/f89e6238-4c20-4e4b-a210-f6ad80d6dbb0)
+![Screenshot from 2023-11-04 15-53-32](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/925a70c0-7cb9-4cfe-bb1b-2d7d123c2fed)
 
 Now to open the ring_counter.def file for floorplan we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read
 ```
-
-- the command should look similar to something shown below:
-
-![Screenshot from 2023-11-02 21-55-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/39b057b7-29d4-464f-be80-aac172aeb278)
-
 now to view the floorplan we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
 ```
 
 - The floorplan is viewed in MAGIC as shown below:
 
-![Screenshot from 2023-11-02 22-00-05](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/96baf918-1c36-4d74-ae19-ed4a466496dd)
+![Screenshot from 2023-11-04 15-55-39](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5a889054-ed33-48b0-afde-0f6e24004c33)
 
-![Screenshot from 2023-11-02 22-01-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/946cb65b-12b3-48e9-9166-4b8f4ec43fda)
+![Screenshot from 2023-11-04 15-56-01](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/64efd45b-c8eb-47ba-ad92-b5fea1feefb4)
 
-![Screenshot from 2023-11-02 22-01-43](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3ff4b8cc-ae69-4237-bfc7-de7a9d040849)
+![Screenshot from 2023-11-04 15-56-10](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/64f98067-055f-43eb-857f-83bf92020a8a)
 
 ## PLACEMENT:
 
 similar to floorplan before viewing the placement we first need to go to the directory where the ring_counter.def file  for placement is created, we type the following command to locate the file:
 
 ```sh
-OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/placement
+OpenLane/designs/ring_counter/runs/RUN_2023.11.04_10.09.02/results/placement
 ```
 
 this will give us 4 files present in the placement after the **Successfull flow** as shown below:
 
-![Screenshot from 2023-11-02 22-06-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/f0f934db-ad7b-4ac8-8f5f-d51b95967fb5)
+![Screenshot from 2023-11-04 16-05-45](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/349add57-6369-48b9-b700-0efe2ef18f0c)
 
 Now to open the ring_counter.def file for placement we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read
 ```
-
-- the command should look similar to something shown below:
-
-![Screenshot from 2023-11-02 22-09-51](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3b9513ba-5327-497c-b0b7-75ee172441b3)
 
 now to view the placement we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
 ```
 
 - The Placement is viewed in MAGIC as shown below:
 
-![Screenshot from 2023-11-02 22-13-29](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/ff083347-cb2f-43e1-85c0-9af5028fc07a)
+![Screenshot from 2023-11-04 16-07-55](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/c21e4618-612b-464f-87a3-d052afb79ce9)
 
-![Screenshot from 2023-11-02 22-13-46](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b69bf329-53ca-4de4-8d0e-af0916581fde)
+![Screenshot from 2023-11-04 16-08-04](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/96c237dc-f63e-4525-af1f-8ecb5e0ca154)
 
-![Screenshot from 2023-11-02 22-13-50](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/bbbc90df-ee96-4e68-b239-dbf9d6bc5b26)
-
-![Screenshot from 2023-11-02 22-14-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b7fed75f-c1a3-4e7e-8a20-94253ffd8567)
+![Screenshot from 2023-11-04 16-08-10](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/27404281-620d-4f33-9791-73ee501f8b2f)
 
 ## CTS (CLOCK TREE SYNTHESIS):
 
 similar to placement before viewing the CTS we first need to go to the directory where the ring_counter.def file  for CTS is created, we type the following command to locate the file:
 
 ```sh
-OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/cts
+OpenLane/designs/ring_counter/runs/RUN_2023.11.04_10.09.02/results/cts
 ```
 
 this will give us 3 files present in the CTS after the **Successfull flow** as shown below:
 
-![Screenshot from 2023-11-02 22-22-09](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/6f975ac8-cd2e-4b34-b46c-301622232b74)
+![Screenshot from 2023-11-04 16-10-06](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/44e49585-948f-42e4-a8dd-dabe47f9bdb3)
 
+now to view the CTS we type the following command:
 
+```sh
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+```
 
-![Screenshot from 2023-11-02 22-24-54](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/12976067-eca2-4ccd-973d-00a43b03e274)
+- The CTS is viewed in MAGIC as shown below:
 
-![Screenshot from 2023-11-02 22-25-04](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/206cc426-2a4d-4d43-a487-0ff36f87cdb8)
+![Screenshot from 2023-11-04 16-11-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/d10d052d-18dc-4f70-9d15-b19a160d861e)
 
 ## ROUTING:
 
 similar to CTS before viewing the Routing we first need to go to the directory where the ring_counter.def file  for Routing is created, we type the following command to locate the file:
 
 ```sh
-OpenLane/designs/ring_counter/runs/RUN_2023.11.02_15.20.00/results/routing
+OpenLane/designs/ring_counter/runs/RUN_2023.11.04_10.09.02/results/routing
 ```
 
 this will give us 4 files present in the Routing after the **Successfull flow** as shown below:
 
-![Screenshot from 2023-11-02 22-27-00](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/627ab8d6-c349-4e23-a541-0eb682ca2845)
+![Screenshot from 2023-11-04 16-15-56](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/007a9e2e-0faf-4287-bf4b-b0b21eec8d73)
 
 Now to open the ring_counter.def file for Routing we use the help of the tool **MAGIC** to invoke this tool we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read
 ```
 
-now to view the CTS we type the following command:
+now to view the Routing we type the following command:
 
 ```sh
-magic -T /home/tawfeeq/.volare/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
+magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef def read ring_counter.def &
 ```
 
 - The Routing is viewed in MAGIC as shown below:
 
-![Screenshot from 2023-11-02 22-31-48](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b4024d8a-b406-4dee-a78c-289831c662cc)
+![Screenshot from 2023-11-04 16-21-32](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b24742fa-2cd8-49e2-bf1e-ed3284b4493b)
 
-![Screenshot from 2023-11-02 22-31-55](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5938fb40-a0bb-46c3-a000-7f95ca5b1965)
+![Screenshot from 2023-11-04 16-21-39](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/35bf4fe2-2a15-401f-80e4-d09d53ff0ce4)
 
-![Screenshot from 2023-11-02 22-32-11](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/9aa814b8-85f1-4db2-aae9-701cccb1b071)
-
-![Screenshot from 2023-11-02 22-32-19](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/03d00eb5-c49e-436d-b0e1-d11861b99448)
+![Screenshot from 2023-11-04 16-21-45](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/cea85f17-8dba-450d-9e73-2f6e5d0cb6ef)
 
 </details>
 
