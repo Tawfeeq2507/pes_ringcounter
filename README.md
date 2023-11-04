@@ -785,6 +785,8 @@ To view the final design type the following code: ```magic -T /home/tawfeeq/Desk
 
 ## STATISTICS:
 
+
+
 ![Screenshot from 2023-11-04 19-20-35](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/d3585742-32ea-46f6-a050-9aa030ca71d2)
 
 ![Screenshot from 2023-11-04 19-20-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/c0b9979a-c3cb-400d-94a4-57e07673c1d9)
@@ -824,6 +826,20 @@ To view the final design type the following code: ```magic -T /home/tawfeeq/Desk
 ![Screenshot from 2023-11-04 19-25-06](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5fd7badb-78a7-4c68-aeff-271ea05cbd55)
 
 ![Screenshot from 2023-11-04 19-25-10](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/8a48893f-4df8-4fab-b054-59f69ee26e76)
+
+## STATISTICS:
+
+### POWER REPORT:
+
+![Screenshot from 2023-11-04 19-33-18](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b5cca65d-fe0f-4e30-927b-0138cfd30b07)
+
+```
+    Area = 243 u^2 17% utilisation
+    Internal Power = 6.77e-05 W 86.3% 
+    Switching Power = 1.08e-05 W 13.7%  
+    Leakage Power = 1.97e-10 W  0.0%
+    Total Power = 7.85e-05 W
+```
 
 </details>
 
