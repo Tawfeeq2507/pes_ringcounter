@@ -3,7 +3,7 @@
     "VERILOG_FILES": "dir::src/ring_counter.v",
     "CLOCK_PORT": "clk",
     "CLOCK_PERIOD": 10.0,
-    "DIE_AREA": "0 0 500 500",
+    "DIE_AREA": "0 0 55 55",
     "FP_SIZING": "absolute",
     "FP_PDN_VPITCH": 25,
     "FP_PDN_HPITCH": 25,
