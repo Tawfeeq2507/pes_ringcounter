@@ -785,6 +785,46 @@ To view the final design type the following code: ```magic -T /home/tawfeeq/Desk
 
 ## STATISTICS:
 
+![Screenshot from 2023-11-04 19-20-35](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/d3585742-32ea-46f6-a050-9aa030ca71d2)
+
+![Screenshot from 2023-11-04 19-20-44](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/c0b9979a-c3cb-400d-94a4-57e07673c1d9)
+
+![Screenshot from 2023-11-04 19-20-52](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/a1379b2c-fbac-4528-bbc1-c03dacc056a1)
+
+![Screenshot from 2023-11-04 19-21-00](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/fc813f4c-ab1a-4a41-83e4-fb08eedaa84c)
+
+![Screenshot from 2023-11-04 19-21-09](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/0a718d08-b0a2-4bd3-acce-1b1431396d69)
+
+![Screenshot from 2023-11-04 19-21-20](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/745533c6-6e6d-4721-82ea-dd417fb84183)
+
+![Screenshot from 2023-11-04 19-21-27](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/c4b0c82b-1a47-4641-a802-57a2ec3ba803)
+
+![Screenshot from 2023-11-04 19-21-33](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5171691e-4336-4d13-8cdb-21c1df1bb5e7)
+
+![Screenshot from 2023-11-04 19-21-40](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/a1347814-4cee-47c0-861f-01c16f39480a)
+
+![Screenshot from 2023-11-04 19-21-46](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/3f0c93f4-1666-494c-951a-1e42034c98a4)
+
+![Screenshot from 2023-11-04 19-21-58](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/f58b081f-4bcd-4ee9-99d7-f6479f78eedc)
+
+![Screenshot from 2023-11-04 19-22-17](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/19e4709b-11ea-42e5-a4eb-d56e4e0a15e3)
+
+![Screenshot from 2023-11-04 19-22-23](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/a6b5d777-95ef-46df-b3a2-cce59327830a)
+
+![Screenshot from 2023-11-04 19-22-33](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/846afe84-63a5-4f7c-8d1c-9e35c3f55cc7)
+
+![Screenshot from 2023-11-04 19-22-49](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/48ce7104-7425-430d-82ed-39b526e78a78)
+
+![Screenshot from 2023-11-04 19-23-17](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/8b03d724-4709-4647-aefa-9a5dcb730e17)
+
+![Screenshot from 2023-11-04 19-24-11](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b00b6827-82cd-44a4-b873-56e32d7560c2)
+
+![Screenshot from 2023-11-04 19-25-03](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/b6125b69-5e8d-4b8e-ae00-823ece7a9c69)
+
+![Screenshot from 2023-11-04 19-25-06](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/5fd7badb-78a7-4c68-aeff-271ea05cbd55)
+
+![Screenshot from 2023-11-04 19-25-10](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/8a48893f-4df8-4fab-b054-59f69ee26e76)
+
 </details>
 
 
