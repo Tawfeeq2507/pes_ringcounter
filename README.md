@@ -775,6 +775,8 @@ magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef de
 
 ```run_antenna_check```
 
+![Screenshot from 2023-11-04 16-29-12](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/63bf16fa-8833-4f7a-860e-4733c716ebe5)
+
 </details>
 
 
