@@ -765,6 +765,16 @@ magic -T /home/tawfeeq/Desktop/sky130A.tech lef read ../../tmp/merged.nom.lef de
 
 ![Screenshot from 2023-11-04 16-21-45](https://github.com/Tawfeeq2507/pes_ringcounter/assets/142083027/cea85f17-8dba-450d-9e73-2f6e5d0cb6ef)
 
+``` run_magic```
+
+```run_magic_spice_export```
+
+```run_magic_drc```
+
+```run_lvs```
+
+```run_antenna_check```
+
 </details>
 
 
